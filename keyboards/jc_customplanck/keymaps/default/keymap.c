@@ -41,7 +41,7 @@ enum jc_customplanck_keycodes {
   MEDI,
   NUMP,
   QMKL,
-}
+};
 
 enum jc_customplanck_functions {
   __RST,
