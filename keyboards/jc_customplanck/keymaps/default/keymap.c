@@ -333,6 +333,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else if(IS_LAYER_ON(_MEDI)) {
               layer_off(_MEDI);
+              layer_on(_LHUB);
             }
         }
         return false;
@@ -345,6 +346,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else if(IS_LAYER_ON(_NUMP)) {
               layer_off(_NUMP);
+              layer_on(_LHUB);
             }
         }
         return false;
@@ -357,6 +359,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else if(IS_LAYER_ON(_QMKL)) {
               layer_off(_QMKL);
+              layer_on(_LHUB);
             }
         }
         return false;
