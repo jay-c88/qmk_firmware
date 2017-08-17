@@ -32,6 +32,9 @@ enum jc_numpad_layers {
 
 enum jc_numpad_keycodes {
   DEFAULT = SAFE_RANGE,
+  MAIN,
+  FUNC,
+  TEST,
   TESTHUB,
   TESTHA,
   TESTHB,
@@ -61,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `---------------------------'
  */
 [_MAIN] = KEYMAP(
-  XXXXXXXXXX, TO(_FUNC), TO(_TEST),   KC_BSPC,
+  XXXXXXXXXX,      FUNC,      TEST,   KC_BSPC,
      KC_NLCK,   KC_PSLS,   KC_PAST,   KC_PMNS,
        KC_P7,     KC_P8,     KC_P9,   KC_PPLS,
        KC_P4,     KC_P5,     KC_P6, MO(_MEDI),
@@ -109,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `---------------------------'
  */
 [_FUNC] = KEYMAP(
-   TO(_MAIN),XXXXXXXXXX, TO(_TEST),XXXXXXXXXX,
+        MAIN,XXXXXXXXXX,      TEST,XXXXXXXXXX,
       KC_F10,    KC_F11,    KC_F12,   KC_PSCR,
        KC_F7,     KC_F8,     KC_F9,   KC_SLCK,
        KC_F4,     KC_F5,     KC_F6,   KC_PAUS,
@@ -157,7 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `---------------------------'
  */
 [_TEST] = KEYMAP(
-   TO(_MAIN), TO(_FUNC),XXXXXXXXXX, TG(_DUMM),
+        MAIN,      FUNC,XXXXXXXXXX, TG(_DUMM),
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX, TG(_TES1),
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
@@ -302,8 +305,31 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     return MACRO_NONE;
 };
 
+void persistant_default_layer_set(uint16_t default_layer) {
+  eeconfig_update_default_layer(default_layer);
+  default_layer_set(default_layer);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case MAIN:
+        if (record->event.pressed) {
+          persistant_default_layer_set(1UL<<_MAIN);
+        }
+        return false;
+        break;
+    case FUNC:
+        if (record->event.pressed) {
+          persistant_default_layer_set(1UL<<_FUNC);
+        }
+        return false;
+        break;
+    case TEST:
+        if (record->event.pressed) {
+          persistant_default_layer_set(1UL<<_TEST);
+        }
+        return false;
+        break;
     case TESTHUB:
         if (record->event.pressed) {
           layer_on(_TESTHUB);
