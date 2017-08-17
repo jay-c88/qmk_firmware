@@ -184,8 +184,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX, TG(_TES1),
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-        KC_X,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
+        KC_X,XXXXXXXXXX,XXXXXXXXXX,
         XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
 ),
 
@@ -284,13 +284,19 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
   // MACRODOWN only works in this function
       switch(id) {
         case 0:
-          SEND_STRING("Hub");
+          if (record->event.pressed) {
+            SEND_STRING("Hub");
+          }
           return false;
         case 1:
-          SEND_STRING("TestA");
+          if (record->event.pressed) {
+            SEND_STRING("TestA");
+          }
           return false;
         case 2:
-          SEND_STRING("TestB");
+          if (record->event.pressed) {
+            SEND_STRING("TestB");
+          }
           return false;
       }
     return MACRO_NONE;
@@ -315,6 +321,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           else if(IS_LAYER_ON(_TESTHA)) {
             layer_off(_TESTHA);
+            layer_on(_TESTHUB);
           }
         }
         return false;
@@ -327,6 +334,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           else if(IS_LAYER_ON(_TESTHB)) {
             layer_off(_TESTHB);
+            layer_on(_TESTHUB);
           }
         }
         return false;
@@ -342,10 +350,6 @@ void matrix_init_user(void) {
 
 void matrix_scan_user(void) {
 
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  return true;
 }
 
 void led_set_user(uint8_t usb_led) {
