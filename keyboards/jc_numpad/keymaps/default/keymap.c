@@ -25,6 +25,16 @@ enum jc_numpad_layers {
   _TEST,    // Testing Layer (Switch)
   _TES1,    // Testing 1 Layer (Toggle)
   _DUMM,    // DUMMY Layer (from _TEST) (Toggle)
+  _TESTHUB,
+  _TESTHA,
+  _TESTHB,
+};
+
+enum jc_numpad_keycodes {
+  DEFAULT = SAFE_RANGE,
+  TESTHUB,
+  TESTHA,
+  TESTHB,
 };
 
 enum jc_numpad_functions {
@@ -173,9 +183,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_TES1] = KEYMAP(
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX, TG(_TES1),
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-     DE_EXLM,     DE_AT,XXXXXXXXXX,XXXXXXXXXX,
-     KC_LEFT,XXXXXXXXXX,   KC_RGHT,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+        KC_X,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
+),
+
+[_TESTHUB] = KEYMAP(
+      TESTHA,    TESTHB,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
+        M(0),XXXXXXXXXX,XXXXXXXXXX,
+        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
+),
+[_TESTHA] = KEYMAP(
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    TESTHA,
+        M(1),XXXXXXXXXX,XXXXXXXXXX,
+        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
+),
+[_TESTHB] = KEYMAP(
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    TESTHB,
+        M(2),XXXXXXXXXX,XXXXXXXXXX,
         XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
 ),
 
@@ -248,11 +283,57 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
   // MACRODOWN only works in this function
       switch(id) {
-        default:
-        break;
+        case 0:
+          SEND_STRING("Hub");
+          return false;
+        case 1:
+          SEND_STRING("TestA");
+          return false;
+        case 2:
+          SEND_STRING("TestB");
+          return false;
       }
     return MACRO_NONE;
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case TESTHUB:
+        if (record->event.pressed) {
+          layer_on(_TESTHUB);
+        }
+        else {
+          layer_off(_TESTHUB);
+        }
+        return false;
+        break;
+    case TESTHA:
+        if (record->event.pressed) {
+          if(IS_LAYER_OFF(_TESTHA)) {
+            layer_on(_TESTHA);
+            layer_off(_TESTHUB);
+          }
+          else if(IS_LAYER_ON(_TESTHA)) {
+            layer_off(_TESTHA);
+          }
+        }
+        return false;
+        break;
+    case TESTHB:
+        if (record->event.pressed) {
+          if(IS_LAYER_OFF(_TESTHB)) {
+            layer_on(_TESTHB);
+            layer_off(_TESTHUB);
+          }
+          else if(IS_LAYER_ON(_TESTHB)) {
+            layer_off(_TESTHB);
+          }
+        }
+        return false;
+        break;
+  }
+  return true;
+}
 
 
 void matrix_init_user(void) {
