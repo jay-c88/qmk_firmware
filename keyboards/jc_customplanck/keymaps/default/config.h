@@ -21,16 +21,13 @@
 
 // place overrides here
 
-#undef MOUSEKEY_TIME_TO_MAX
-#undef MOUSEKEY_MAX_SPEED
-
-#define MOUSEKEY_TIME_TO_MAX 15
-#define MOUSEKEY_MAX_SPEED 13
-
-#undef MOUSEKEY_DELAY
 #define MOUSEKEY_DELAY 0
 
-#undef MOUSEKEY_WHEEL_DELAY
+#define MOUSEKEY_INTERVAL 20
+
+#define MOUSEKEY_TIME_TO_MAX 15
+#define MOUSEKEY_MAX_SPEED 4
+
 #define MOUSEKEY_WHEEL_DELAY 0
 
 #endif
