@@ -298,21 +298,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case LHUB:
         if (record->event.pressed) {
-            layer_on(_LHUB)
+            layer_on(_LHUB);
         }
         else {
-            layer_off(_LHUB)
+            layer_off(_LHUB);
         }
         return false;
         break;
     case MEDI:
         if (record->event.pressed) {
             if(IS_LAYER_OFF(_MEDI)) {
-              layer_on(_MEDI)
-              layer_off(_LHUB)
+              layer_on(_MEDI);
+              layer_off(_LHUB);
             }
             else if(IS_LAYER_ON(_MEDI)) {
-              layer_off(_MEDI)
+              layer_off(_MEDI);
             }
         }
         else {
@@ -323,11 +323,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case NUMP:
         if (record->event.pressed) {
             if(IS_LAYER_OFF(_NUMP)) {
-              layer_on(_NUMP)
-              layer_off(_LHUB)
+              layer_on(_NUMP);
+              layer_off(_LHUB);
             }
             else if(IS_LAYER_ON(_NUMP)) {
-              layer_off(_NUMP)
+              layer_off(_NUMP);
             }
         }
         else {
@@ -338,11 +338,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QMKL:
         if (record->event.pressed) {
             if(IS_LAYER_OFF(_QMKL)) {
-              layer_on(_QMKL)
-              layer_off(_LHUB)
+              layer_on(_QMKL);
+              layer_off(_LHUB);
             }
             else if(IS_LAYER_ON(_QMKL)) {
-              layer_off(_QMKL)
+              layer_off(_QMKL);
             }
         }
         else {
