@@ -164,19 +164,19 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXX
 
 /* _MEDI: Media Layer (Toggle)
  * ,-----------------------------------------------------------------------------------.
- * |  Esc | Mute | Vol- | Vol+ | WRefr| WStop|MAccl0| MScrL|  MUp | MScrR| MScrU| Bksp |
+ * |  Esc | MStop| Vol- | Mute | Vol+ | XXXX |MAccl0| MScrL|  MUp | MScrR| MScrU| Bksp |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Enter| MPly | MPrev| MNext| WBack| WFwd |MAccl1| MLeft| MDown| MRght| MScrD| Enter|
+ * | Enter| MRwd | MPrev| MPlay| MNext| MFfd |MAccl1| MLeft| MDown| MRght| MScrD| Enter|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  Del | MStop| MRew | MFwd | XXXX | XXXX |MAccl2|  M3  |  M4  |  M5  |  Up  | XXXX |
+ * |  Del | WStop| WBak | WRef | WFwd | XXXX |MAccl2|  M3  |  M4  |  M5  |  Up  | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ,  |   .  | XXXX | XXXX | TGOFF| Space| Space|  M1  |  M2  | Left | Down | Right|
  * `-----------------------------------------------------------------------------------'
  */
 [_MEDI] = KEYMAP(
-    KC_ESC,   KC_MUTE,   KC_VOLD,   KC_VOLU,   KC_WREF,   KC_WSTP,   KC_ACL0,   KC_WH_L,   KC_MS_U,   KC_WH_R,   KC_WH_U,   KC_BSPC,
-    KC_ENT,   KC_MPLY,   KC_MPRV,   KC_MNXT,   KC_WBAK,   KC_WFWD,   KC_ACL1,   KC_MS_L,   KC_MS_D,   KC_MS_R,   KC_WH_D,    KC_ENT,
-    KC_DEL,   KC_MSTP,   KC_MRWD,   KC_MFFD,XXXXXXXXXX,XXXXXXXXXX,   KC_ACL2,   KC_BTN3,   KC_BTN4,   KC_BTN5,     KC_UP,XXXXXXXXXX,
+    KC_ESC,   KC_MSTP,   KC_VOLD,   KC_MUTE,   KC_VOLU,XXXXXXXXXX,   KC_ACL0,   KC_WH_L,   KC_MS_U,   KC_WH_R,   KC_WH_U,   KC_BSPC,
+    KC_ENT,   KC_MRWD,   KC_MPRV,   KC_MPLY,   KC_MNXT,   KC_MFFD,   KC_ACL1,   KC_MS_L,   KC_MS_D,   KC_MS_R,   KC_WH_D,    KC_ENT,
+    KC_DEL,   KC_WSTP,   KC_WBAK,   KC_WREF,   KC_WFWD,XXXXXXXXXX,   KC_ACL2,   KC_BTN3,   KC_BTN4,   KC_BTN5,     KC_UP,XXXXXXXXXX,
    KC_COMM,    KC_DOT,XXXXXXXXXX,XXXXXXXXXX,      MEDI,    KC_SPC,    KC_SPC,   KC_BTN1,   KC_BTN2,   KC_LEFT,   KC_DOWN,   KC_RGHT
 ),
 
