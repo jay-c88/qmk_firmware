@@ -25,19 +25,17 @@ enum jc_numpad_layers {
   _TEST,    // Testing Layer (Switch)
   _TES1,    // Testing 1 Layer (Toggle)
   _DUMM,    // DUMMY Layer (from _TEST) (Toggle)
-  _TESTHUB,
-  _TESTHA,
-  _TESTHB,
 };
 
 enum jc_numpad_keycodes {
   DEFAULT = SAFE_RANGE,
   MAIN,
+  MEDI,
   FUNC,
+  QMKL,
   TEST,
-  TESTHUB,
-  TESTHA,
-  TESTHB,
+  TES1,
+  DUMM,
 };
 
 enum jc_numpad_functions {
@@ -67,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXXXXX,      FUNC,      TEST,   KC_BSPC,
      KC_NLCK,   KC_PSLS,   KC_PAST,   KC_PMNS,
        KC_P7,     KC_P8,     KC_P9,   KC_PPLS,
-       KC_P4,     KC_P5,     KC_P6, MO(_MEDI),
+       KC_P4,     KC_P5,     KC_P6,      MEDI,
        KC_P1,     KC_P2,     KC_P3,
                   KC_P0,   KC_PDOT,   KC_PENT
 ),
@@ -117,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_F7,     KC_F8,     KC_F9,   KC_SLCK,
        KC_F4,     KC_F5,     KC_F6,   KC_PAUS,
        KC_F1,     KC_F2,     KC_F3,
-                KC_LGUI, MO(_QMKL),    KC_ENT
+                KC_LGUI,      QMKL,    KC_ENT
 ),
 
 /* _QMKL: QMK Layer (Momentary from _FUNC)
@@ -160,8 +158,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `---------------------------'
  */
 [_TEST] = KEYMAP(
-        MAIN,      FUNC,XXXXXXXXXX, TG(_DUMM),
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX, TG(_TES1),
+        MAIN,      FUNC,XXXXXXXXXX,      DUMM,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      TES1,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
@@ -184,36 +182,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `---------------------------'
  */
 [_TES1] = KEYMAP(
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX, TG(_TES1),
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
-        KC_X,XXXXXXXXXX,XXXXXXXXXX,
-        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
-),
-
-[_TESTHUB] = KEYMAP(
-      TESTHA,    TESTHB,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   TESTHUB,
-        M(0),XXXXXXXXXX,XXXXXXXXXX,
-        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
-),
-[_TESTHA] = KEYMAP(
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      TES1,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    TESTHA,
-        M(1),XXXXXXXXXX,XXXXXXXXXX,
-        XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
-),
-[_TESTHB] = KEYMAP(
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    TESTHB,
-        M(2),XXXXXXXXXX,XXXXXXXXXX,
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
         XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
 ),
 
@@ -286,21 +259,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
   // MACRODOWN only works in this function
       switch(id) {
-        case 0:
-          if (record->event.pressed) {
-            SEND_STRING("Hub");
-          }
-          return false;
-        case 1:
-          if (record->event.pressed) {
-            SEND_STRING("TestA");
-          }
-          return false;
-        case 2:
-          if (record->event.pressed) {
-            SEND_STRING("TestB");
-          }
-          return false;
+
       }
     return MACRO_NONE;
 };
@@ -330,37 +289,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-    case TESTHUB:
+    case QMKL:
         if (record->event.pressed) {
-          layer_on(_TESTHUB);
+          layer_on(_QMKL);
         }
         else {
-          layer_off(_TESTHUB);
+          layer_off(_QMKL);
         }
         return false;
         break;
-    case TESTHA:
+    case TES1:
         if (record->event.pressed) {
-          if(IS_LAYER_OFF(_TESTHA)) {
-            layer_on(_TESTHA);
-            layer_off(_TESTHUB);
+          if(IS_LAYER_OFF(_TES1)) {
+            layer_on(_TES1);
           }
-          else if(IS_LAYER_ON(_TESTHA)) {
-            layer_off(_TESTHA);
-            layer_on(_TESTHUB);
+          else if(IS_LAYER_ON(_TES1)) {
+            layer_off(_TES1);
           }
         }
         return false;
         break;
-    case TESTHB:
+    case DUMM:
         if (record->event.pressed) {
-          if(IS_LAYER_OFF(_TESTHB)) {
-            layer_on(_TESTHB);
-            layer_off(_TESTHUB);
+          if(IS_LAYER_OFF(_DUMM)) {
+            layer_on(_DUMM);
           }
-          else if(IS_LAYER_ON(_TESTHB)) {
-            layer_off(_TESTHB);
-            layer_on(_TESTHUB);
+          else if(IS_LAYER_ON(_DUMM)) {
+            layer_off(_DUMM);
           }
         }
         return false;
