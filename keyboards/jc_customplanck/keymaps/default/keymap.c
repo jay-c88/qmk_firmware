@@ -19,6 +19,7 @@
 #include "keymap_extras/keymap_german.h"
 #include "led.h"
 #include "avr/wdt.h"
+#include "eeconfig.h"
 
 enum jc_layers {
   _MAIN,    // Main Layer
@@ -34,6 +35,8 @@ enum jc_layers {
 
 enum jc_customplanck_keycodes {
   DEFAULT = SAFE_RANGE,
+  MAIN,
+  COLE,
   LHUB,
   MEDI,
   NUMP,
@@ -51,7 +54,7 @@ enum jc_customplanck_functions {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* _MAIN: Main Layer
+/* _MAIN: Main Layer (QWERZ-DE)
  * ,-----------------------------------------------------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Z  |   U  |   I  |   O  |   P  |   Ü  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -69,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_LCTL,   KC_LGUI,   KC_LALT, MO(_NAVI),      LHUB, MO(_NUMB),    KC_SPC, MO(_SYMB), MO(_NAVI),    KC_DEL,   KC_BSPC,    KC_ENT
 ),
 
-/* _COLE: Colemak Layer (Toggle)
+/* _COLE: Colemak Layer
  * ,-----------------------------------------------------------------------------------.
  * |      |   Q  |   W  |   F  |   P  |   G  |   J  |   L  |   U  |   Y  |   Ö  |   Ü  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -81,10 +84,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_COLE] = KEYMAP(
-__________,      KC_Q,      KC_W,      KC_F,      KC_P,      KC_G,      KC_J,      KC_L,      KC_U,      KC_Y,     DE_OE,     DE_UE,
-__________,      KC_A,      KC_R,      KC_S,      KC_T,      KC_D,      KC_H,      KC_N,      KC_E,      KC_I,      KC_O,     DE_AE,
-__________,      KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_K,      KC_M,__________,__________,     DE_SS,__________,
-__________,__________,__________,__________,__________,__________,__________,__________,__________,__________,__________,__________
+    KC_TAB,      KC_Q,      KC_W,      KC_F,      KC_P,      KC_G,      KC_J,      KC_L,      KC_U,      KC_Y,     DE_OE,     DE_UE,
+   KC_CAPS,      KC_A,      KC_R,      KC_S,      KC_T,      KC_D,      KC_H,      KC_N,      KC_E,      KC_I,      KC_O,     DE_AE,
+   KC_LSFT,      KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,      KC_K,      KC_M,   KC_COMM,    KC_DOT,     DE_SS,   KC_RSFT,
+   KC_LCTL,   KC_LGUI,   KC_LALT, MO(_NAVI),      LHUB, MO(_NUMB),    KC_SPC, MO(_SYMB), MO(_NAVI),    KC_DEL,   KC_BSPC,    KC_ENT
 ),
 
 /* _NUMB: Number Layer (Momentary)
@@ -156,7 +159,7 @@ __________,__________,__________,__________,XXXXXXXXXX,   KC_PSCR,   KC_SLCK,   
       QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-      MEDI,XXXXXXXXXX,XXXXXXXXXX,      NUMP,__________,      COLE,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
+      MEDI,XXXXXXXXXX,XXXXXXXXXX,      NUMP,__________,      MAIN,      COLE,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
 ),
 
 /* _MEDI: Media Layer (Toggle)
@@ -294,8 +297,25 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     return MACRO_NONE;
 };
 
+void persistant_default_layer_set(uint16_t default_layer) {
+  eeconfig_update_default_layer(default_layer);
+  default_layer_set(default_layer);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case MAIN:
+        if (record->event.pressed) {
+          persistant_default_layer_set(1UL<<_MAIN);
+        }
+        return false;
+        break;
+    case COLE:
+        if (record->event.pressed) {
+          persistant_default_layer_set(1UL<<_COLE);
+        }
+        return false;
+        break;
     case LHUB:
         if (record->event.pressed) {
             layer_on(_LHUB);
@@ -315,9 +335,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               layer_off(_MEDI);
             }
         }
-        else {
-            
-        }
         return false;
         break;
     case NUMP:
@@ -330,9 +347,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               layer_off(_NUMP);
             }
         }
-        else {
-            
-        }
         return false;
         break;
     case QMKL:
@@ -344,9 +358,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             else if(IS_LAYER_ON(_QMKL)) {
               layer_off(_QMKL);
             }
-        }
-        else {
-            
         }
         return false;
         break;
