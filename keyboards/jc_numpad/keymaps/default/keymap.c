@@ -23,6 +23,7 @@ enum jc_numpad_layers {
   _FUNC,    // F1-F12 Layer (Switch)
   _QMKL,    // QMK Layer (from _FUNC) (Momentary)
   _TEST,    // Testing Layer (Switch)
+  _MOUS,
   _TES1,    // Testing 1 Layer (Toggle)
   _DUMM,    // DUMMY Layer (from _TEST) (Toggle)
 };
@@ -34,6 +35,7 @@ enum jc_numpad_keycodes {
   FUNC,
   QMKL,
   TEST,
+  MOUS,
   TES1,
   DUMM,
 };
@@ -159,11 +161,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_TEST] = KEYMAP(
         MAIN,      FUNC,XXXXXXXXXX,      DUMM,
-  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      TES1,
+        MOUS,XXXXXXXXXX,XXXXXXXXXX,      TES1,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
   XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
         XXXXXXXXXX     ,XXXXXXXXXX,XXXXXXXXXX
+),
+
+/* _MOUS: Test Layer (Switch)
+ * ,---------------------------.
+ * | XXXX | XXXX | XXXX |LayOFF|
+ * |------+------+------+------+
+ * | ACL0 | ACL1 | ACL2 | XXXX |
+ * |------+------+------+------+
+ * | SCRL |  UP  | SCRU | XXXX |
+ * |------+------+------+------+
+ * | LEFT | DOWN | RIGHT| XXXX |
+ * |------+------+------+------|
+ * | SCRR | DOWN | SCRD |      |
+ * |------+------+------+ BTN1 |
+ * |     BTN1    | BTN2 |      |
+ * `---------------------------'
+ */
+[_MOUS] = KEYMAP(
+  XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      MOUS,
+     KC_ACL0,   KC_ACL1,   KC_ACL2,XXXXXXXXXX,
+     KC_WH_L,   KC_MS_U,   KC_WH_U,XXXXXXXXXX,
+     KC_MS_L,   KC_MS_D,   KC_MS_R,XXXXXXXXXX,
+     KC_WH_R,   KC_MS_D,   KC_WH_D,
+        KC_BTN1     ,   KC_BTN2,   KC_BTN1
 ),
 
 /* _TES1: Test Layer (Switch)
@@ -295,6 +321,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         else {
           layer_off(_QMKL);
+        }
+        return false;
+        break;
+    case MOUS:
+        if (record->event.pressed) {
+          if(IS_LAYER_OFF(_MOUS)) {
+            layer_on(_MOUS);
+          }
+          else if(IS_LAYER_ON(_MOUS)) {
+            layer_off(_MOUS);
+          }
         }
         return false;
         break;
