@@ -32,6 +32,14 @@ enum jc_layers {
   _QMKL     // QMK Layer (Toggle)
 };
 
+enum jc_customplanck_keycodes {
+  DEFAULT = SAFE_RANGE,
+  LHUB,
+  MEDI,
+  NUMP,
+  QMKL,
+}
+
 enum jc_customplanck_functions {
   __RST,
 };
@@ -58,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,      DE_Q,      DE_W,      DE_E,      DE_R,      DE_T,      DE_Z,      DE_U,      DE_I,      DE_O,      KC_P,     DE_UE,
    KC_CAPS,      DE_A,      DE_S,      DE_D,      DE_F,      DE_G,      DE_H,      DE_J,      DE_K,      DE_L,     DE_OE,     DE_AE,
    KC_LSFT,      DE_Y,      DE_X,      DE_C,      DE_V,      DE_B,      DE_N,      DE_M,   DE_COMM,    DE_DOT,     DE_SS,   KC_RSFT,
-   KC_LCTL,   KC_LGUI,   KC_LALT, MO(_NAVI), MO(_LHUB), MO(_NUMB),    KC_SPC, MO(_SYMB), MO(_NAVI),    KC_DEL,   KC_BSPC,    KC_ENT
+   KC_LCTL,   KC_LGUI,   KC_LALT, MO(_NAVI),      LHUB, MO(_NUMB),    KC_SPC, MO(_SYMB), MO(_NAVI),    KC_DEL,   KC_BSPC,    KC_ENT
 ),
 
 /* _COLE: Colemak Layer (Toggle)
@@ -145,10 +153,10 @@ __________,__________,__________,__________,XXXXXXXXXX,   KC_PSCR,   KC_SLCK,   
  * `-----------------------------------------------------------------------------------'
  */
 [_LHUB] = KEYMAP(
- TG(_QMKL),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
- TG(_MEDI),XXXXXXXXXX,XXXXXXXXXX, TG(_NUMP),__________, TG(_COLE),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
+      MEDI,XXXXXXXXXX,XXXXXXXXXX,      NUMP,__________,      COLE,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
 ),
 
 /* _MEDI: Media Layer (Toggle)
@@ -159,14 +167,14 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXX
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  Del | MStop| MRew | MFwd | XXXX | XXXX |MAccl2|  M3  |  M4  |  M5  |  Up  | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ,  |   .  | XXXX | XXXX |      | Space| Space|  M1  |  M2  | Left | Down | Right|
+ * |   ,  |   .  | XXXX | XXXX | TGOFF| Space| Space|  M1  |  M2  | Left | Down | Right|
  * `-----------------------------------------------------------------------------------'
  */
 [_MEDI] = KEYMAP(
     KC_ESC,   KC_MUTE,   KC_VOLD,   KC_VOLU,   KC_WREF,   KC_WSTP,   KC_ACL0,   KC_WH_L,   KC_MS_U,   KC_WH_R,   KC_WH_U,   KC_BSPC,
     KC_ENT,   KC_MPLY,   KC_MPRV,   KC_MNXT,   KC_WBAK,   KC_WFWD,   KC_ACL1,   KC_MS_L,   KC_MS_D,   KC_MS_R,   KC_WH_D,    KC_ENT,
     KC_DEL,   KC_MSTP,   KC_MRWD,   KC_MFFD,XXXXXXXXXX,XXXXXXXXXX,   KC_ACL2,   KC_BTN3,   KC_BTN4,   KC_BTN5,     KC_UP,XXXXXXXXXX,
-   KC_COMM,    KC_DOT,XXXXXXXXXX,XXXXXXXXXX,__________,    KC_SPC,    KC_SPC,   KC_BTN1,   KC_BTN2,   KC_LEFT,   KC_DOWN,   KC_RGHT
+   KC_COMM,    KC_DOT,XXXXXXXXXX,XXXXXXXXXX,      MEDI,    KC_SPC,    KC_SPC,   KC_BTN1,   KC_BTN2,   KC_LEFT,   KC_DOWN,   KC_RGHT
 ),
 
 /* _NUMP: NumPad Layer (Toggle)
@@ -177,14 +185,14 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXX
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |   1  |   2  |   3  |   *  | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | XXXX | XXXX | XXXX | XXXX |      | XXXX | Space|   0  |   0  |   .  | XXXX | Enter|
+ * | XXXX | XXXX | XXXX | XXXX | TGOFF| XXXX | Space|   0  |   0  |   .  | XXXX | Enter|
  * `-----------------------------------------------------------------------------------'
  */
 [_NUMP] = KEYMAP(
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   KC_NLCK,     KC_P7,     KC_P8,     KC_P9,   KC_PPLS,   KC_PSLS,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     KC_P4,     KC_P5,     KC_P6,   KC_PMNS,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     KC_P1,     KC_P2,     KC_P3,   KC_PAST,XXXXXXXXXX,
-XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,XXXXXXXXXX,    KC_SPC,     KC_P0,     KC_P0,   KC_PDOT,XXXXXXXXXX,   KC_PENT
+XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,XXXXXXXXXX,    KC_SPC,     KC_P0,     KC_P0,   KC_PDOT,XXXXXXXXXX,   KC_PENT
 ),
 
 
@@ -215,14 +223,14 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,XXXXXXXXXX,    KC_SPC,   
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | XXXX | Val- | Val+ | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | BL + | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | XXXX | XXXX | XXXX | XXXX |      | XXXX | XXXX | XXXX | XXXX |BLStep| BL - |BLTogg|
+ * | XXXX | XXXX | XXXX | XXXX | TGOFF| XXXX | XXXX | XXXX | XXXX |BLStep| BL - |BLTogg|
  * `-----------------------------------------------------------------------------------'
  */
 [_QMKL] = KEYMAP(
 XXXXXXXXXX,   RGB_HUD,   RGB_HUI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,  F(__RST),
 XXXXXXXXXX,   RGB_SAD,   RGB_SAI,   RGB_MOD,   RGB_TOG,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     DEBUG,
 XXXXXXXXXX,   RGB_VAD,   RGB_VAI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    BL_INC,XXXXXXXXXX,
-XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   BL_STEP,    BL_DEC,   BL_TOGG
+XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   BL_STEP,    BL_DEC,   BL_TOGG
 ),
 
 };
@@ -286,6 +294,66 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     return MACRO_NONE;
 };
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case LHUB:
+        if (record->event.pressed) {
+            layer_on(_LHUB)
+        }
+        else {
+            layer_off(_LHUB)
+        }
+        return false;
+        break;
+    case MEDI:
+        if (record->event.pressed) {
+            if(IS_LAYER_OFF(_MEDI)) {
+              layer_on(_MEDI)
+              layer_off(_LHUB)
+            }
+            else if(IS_LAYER_ON(_MEDI)) {
+              layer_off(_MEDI)
+            }
+        }
+        else {
+            
+        }
+        return false;
+        break;
+    case NUMP:
+        if (record->event.pressed) {
+            if(IS_LAYER_OFF(_NUMP)) {
+              layer_on(_NUMP)
+              layer_off(_LHUB)
+            }
+            else if(IS_LAYER_ON(_NUMP)) {
+              layer_off(_NUMP)
+            }
+        }
+        else {
+            
+        }
+        return false;
+        break;
+    case QMKL:
+        if (record->event.pressed) {
+            if(IS_LAYER_OFF(_QMKL)) {
+              layer_on(_QMKL)
+              layer_off(_LHUB)
+            }
+            else if(IS_LAYER_ON(_QMKL)) {
+              layer_off(_QMKL)
+            }
+        }
+        else {
+            
+        }
+        return false;
+        break;
+  }
+  return true;
+}
+
 
 void matrix_init_user(void) {
 
@@ -307,10 +375,6 @@ void matrix_scan_user(void) {
     //         ws2812_setleds(led, 8);
     //         break;
     // }
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  return true;
 }
 
 void led_set_user(uint8_t usb_led) {
