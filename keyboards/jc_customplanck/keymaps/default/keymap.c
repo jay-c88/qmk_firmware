@@ -49,6 +49,8 @@ enum jc_customplanck_keycodes {
 
 enum jc_customplanck_functions {
   __RST,
+  __LLUP,
+  __LLDN,
 };
 
 enum jc_customplanck_macros {
@@ -73,6 +75,10 @@ enum jc_customplanck_macros {
 #define D3_4L       M(_M_D3_4L)
 #define D3_ClTn     M(_M_D3_ClTn)
 #define M_MicM      M(_M_MicM)
+
+uint8_t layer_led_val_step_max = 6;
+uint8_t layer_led_val_step = 6;
+
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -137,16 +143,16 @@ __________,__________,__________,      DE_0,__________,XXXXXXXXXX,XXXXXXXXXX,___
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   °  |   [  |   ]  |   {  |   }  |   !  |   ?  |   (  |   )  |   -  |   :  |   '  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   `  |   ´  | XXXX |   ~  |   |  |   &  |   µ  |   _  |   \  |   /  |   ;  |
+ * |      |   `  |   ´  | XXXX |   ~  |   |  |   &  |   *  |   _  |   \  |   /  |   ;  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      | XXXX | XXXX | XXXX |      |      | XXXX |      |      |      |
+ * |      |      |      | XXXX | XXXX | XXXX |      |      | XXXX |      |   µ   |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_SYMB] = KEYMAP(
    DE_CIRC,     DE_AT,   DE_DQOT,   DE_EURO,    DE_DLR,   DE_PERC,   DE_PARA,   DE_LESS,   DE_MORE,    DE_EQL,   DE_PLUS,   DE_HASH,
    DE_RING,   DE_LBRC,   DE_RBRC,   DE_LCBR,   DE_RCBR,   DE_EXLM,    DE_QST,   DE_LPRN,   DE_RPRN,   DE_MINS,   DE_COLN,   DE_QUOT,
-__________,    DE_GRV,   DE_ACUT,XXXXXXXXXX,   DE_TILD,   DE_PIPE,   DE_AMPR,   DE_MICR,   DE_UNDS,   DE_BSLS,   DE_SLSH,   DE_SCLN,
-__________,__________,__________,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,__________,XXXXXXXXXX,__________,__________,__________
+__________,    DE_GRV,   DE_ACUT,XXXXXXXXXX,   DE_TILD,   DE_PIPE,   DE_AMPR,   DE_ASTR,   DE_UNDS,   DE_BSLS,   DE_SLSH,   DE_SCLN,
+__________,__________,__________,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,__________,XXXXXXXXXX,__________,   DE_MICR,__________
 ),
 
 /* _NAVI: Navigation Layer (Momentary)
@@ -233,7 +239,7 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,    KC_SPC,   
  * `-----------------------------------------------------------------------------------'
  */
 [_QMKL] = KEYMAP(
-XXXXXXXXXX,   RGB_HUD,   RGB_HUI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,  F(__RST),
+XXXXXXXXXX,   RGB_HUD,   RGB_HUI, F(__LLDN), F(__LLUP),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,  F(__RST),
 XXXXXXXXXX,   RGB_SAD,   RGB_SAI,   RGB_MOD,   RGB_TOG,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     DEBUG,
 XXXXXXXXXX,   RGB_VAD,   RGB_VAI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    BL_INC,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   BL_STEP,    BL_DEC,   BL_TOGG
@@ -280,6 +286,8 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,    M_MicM,XXXXXXXXXX,XXXXXXXXXX,XXX
 /* id for user defined functions */
 enum function_id {
     PROMICRO_PROGRAM,
+    LAYERLED_DOWN,
+    LAYERLED_UP,
 };
 
 void promicro_bootloader_jmp(bool program) {
@@ -306,6 +314,26 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
         case PROMICRO_PROGRAM:
             promicro_bootloader_jmp(true);
             break;
+        case LAYERLED_DOWN:
+            if (record->event.pressed) {
+              if (layer_led_val_step - 1 < 1) {
+                layer_led_val_step = 1;
+              }
+              else {
+                layer_led_val_step = layer_led_val_step - 1;
+              }
+            }
+            break;
+        case LAYERLED_UP:
+            if (record->event.pressed) {
+              if (layer_led_val_step + 1 > layer_led_val_step_max) {
+                layer_led_val_step = layer_led_val_step_max;
+              }
+              else {
+                layer_led_val_step = layer_led_val_step + 1;
+              }
+            }
+            break;
         default:
             break;
     }
@@ -317,6 +345,8 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 */
 const uint16_t PROGMEM fn_actions[] = {
   [__RST] = ACTION_FUNCTION(PROMICRO_PROGRAM),
+  [__LLDN] = ACTION_FUNCTION(LAYERLED_DOWN),
+  [__LLUP] = ACTION_FUNCTION(LAYERLED_UP),
 };
 
 
@@ -476,53 +506,54 @@ void matrix_init_user(void) {
 
 void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
+
     switch (layer) {
         case _NUMB:
-            led[6].r = 255;
-            led[6].g = 127;
-            led[6].b = 0;
+            led[6].r = 255 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 127 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 0 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _SYMB:
-            led[6].r = 255;
-            led[6].g = 255;
-            led[6].b = 0;
+            led[6].r = 255 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 255 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 0 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _NAVI:
-            led[6].r = 0;
-            led[6].g = 255;
-            led[6].b = 0;
+            led[6].r = 0 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 255 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 0 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _LHUB:
-            led[6].r = 120;
-            led[6].g = 120;
-            led[6].b = 220;
+            led[6].r = 120 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 120 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 220 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _MEDI:
-            led[6].r = 70;
-            led[6].g = 230;
-            led[6].b = 230;
+            led[6].r = 70 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 230 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 230 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _QMKL:
-            led[6].r = 255;
-            led[6].g = 0;
-            led[6].b = 0;
+            led[6].r = 255 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 0 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 0 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _DIA3:
-            led[6].r = 130;
-            led[6].g = 20;
-            led[6].b = 30;
+            led[6].r = 130 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 20 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 30 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _D3FN:
-            led[6].r = 180;
-            led[6].g = 70;
-            led[6].b = 70;
+            led[6].r = 180 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 70 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 70 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         default: 
