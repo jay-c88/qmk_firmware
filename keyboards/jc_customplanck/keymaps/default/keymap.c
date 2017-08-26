@@ -479,7 +479,7 @@ void matrix_scan_user(void) {
     switch (layer) {
         case _NUMB:
             led[6].r = 255;
-            led[6].g = 200;
+            led[6].g = 127;
             led[6].b = 0;
             ws2812_setleds(led, 8);
             break;
@@ -501,6 +501,12 @@ void matrix_scan_user(void) {
             led[6].b = 220;
             ws2812_setleds(led, 8);
             break;
+        case _MEDI:
+            led[6].r = 70;
+            led[6].g = 230;
+            led[6].b = 230;
+            ws2812_setleds(led, 8);
+            break;
         case _QMKL:
             led[6].r = 255;
             led[6].g = 0;
@@ -508,21 +514,15 @@ void matrix_scan_user(void) {
             ws2812_setleds(led, 8);
             break;
         case _DIA3:
-            led[6].r = 115;
+            led[6].r = 130;
             led[6].g = 20;
             led[6].b = 30;
             ws2812_setleds(led, 8);
             break;
         case _D3FN:
-            led[6].r = 200;
-            led[6].g = 150;
-            led[6].b = 150;
-            ws2812_setleds(led, 8);
-            break;
-        case _COLE:
-            led[6].r = 200;
-            led[6].g = 200;
-            led[6].b = 200;
+            led[6].r = 180;
+            led[6].g = 70;
+            led[6].b = 70;
             ws2812_setleds(led, 8);
             break;
         default: 
@@ -540,28 +540,28 @@ void led_set_user(uint8_t usb_led) {
     if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
         // Turn capslock on
         // PORTB &= ~(1<<2);
-        led[6].r = 255;
+        led[7].r = 255;
         ws2812_setleds(led, 8);
     } else {
         // Turn capslock off
         // PORTB |= (1<<2);
-        led[6].r = 0;
+        led[7].r = 0;
         ws2812_setleds(led, 8);
     }
 
     if (usb_led & (1<<USB_LED_SCROLL_LOCK)) {
-        led[0].g = 255;
+        led[7].g = 255;
         ws2812_setleds(led, 8);
     } else {
-        led[0].g = 0;
+        led[7].g = 0;
         ws2812_setleds(led, 8);
     }
 
     if (usb_led & (1<<USB_LED_NUM_LOCK)) {
-        led[0].b = 150;
+        led[7].b = 150;
         ws2812_setleds(led, 8);
     } else {
-        led[0].b = 0;
+        led[7].b = 0;
         ws2812_setleds(led, 8);
     }
 }
