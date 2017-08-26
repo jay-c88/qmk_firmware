@@ -22,6 +22,8 @@ void eeconfig_init(void)
 #ifdef STENO_ENABLE
     eeprom_update_byte(EECONFIG_STENOMODE,      0);
 #endif
+
+    eeprom_update_byte(EECONFIG_LAYERLEDSTATUS,      6);
 }
 
 void eeconfig_enable(void)

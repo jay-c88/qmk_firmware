@@ -37,6 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define EECONFIG_STENOMODE                          (uint8_t *)13
 // EEHANDS for two handed boards
 #define EECONFIG_HANDEDNESS         				(uint8_t *)14
+#define EECONFIG_LAYERLEDSTATUS        				(uint8_t *)15
 
 
 /* debug bit */

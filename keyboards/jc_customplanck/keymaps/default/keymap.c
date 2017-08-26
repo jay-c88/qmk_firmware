@@ -20,6 +20,7 @@
 #include "led.h"
 #include "avr/wdt.h"
 #include "eeconfig.h"
+#include <avr/eeprom.h>
 
 enum jc_layers {
   _MAIN,    // Main Layer
@@ -322,6 +323,7 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
               else {
                 layer_led_val_step = layer_led_val_step - 1;
               }
+              eeprom_update_byte(EECONFIG_LAYERLEDSTATUS, layer_led_val_step);
             }
             break;
         case LAYERLED_UP:
@@ -332,6 +334,7 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
               else {
                 layer_led_val_step = layer_led_val_step + 1;
               }
+              eeprom_update_byte(EECONFIG_LAYERLEDSTATUS, layer_led_val_step);
             }
             break;
         default:
@@ -501,7 +504,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
 void matrix_init_user(void) {
-
+  layer_led_val_step = eeprom_read_byte(EECONFIG_LAYERLEDSTATUS);
 }
 
 void matrix_scan_user(void) {
