@@ -338,8 +338,8 @@ void rgblight_sethsv(uint16_t hue, uint8_t sat, uint8_t val) {
         uint16_t _hue;
         int8_t direction = ((rgblight_config.mode - 25) % 2) ? -1 : 1;
         uint16_t range = pgm_read_word(&RGBLED_GRADIENT_RANGES[(rgblight_config.mode - 25) / 2]);
-        for (uint8_t i = 0; i < RGBLED_NUM; i++) {
-          _hue = (range / RGBLED_NUM * i * direction + hue + 360) % 360;
+        for (uint8_t i = 0; i < RGBLED_NUM - 2; i++) {
+          _hue = (range / (RGBLED_NUM - 2) * i * direction + hue + 360) % 360;
           dprintf("rgblight rainbow set hsv: %u,%u,%d,%u\n", i, _hue, direction, range);
           sethsv(_hue, sat, val, (LED_TYPE *)&led[i]);
         }
@@ -356,7 +356,7 @@ void rgblight_sethsv(uint16_t hue, uint8_t sat, uint8_t val) {
 
 void rgblight_setrgb(uint8_t r, uint8_t g, uint8_t b) {
   // dprintf("rgblight set rgb: %u,%u,%u\n", r,g,b);
-  for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+  for (uint8_t i = 0; i < RGBLED_NUM - 2; i++) {
     led[i].r = r;
     led[i].g = g;
     led[i].b = b;
@@ -373,7 +373,7 @@ void rgblight_set(void) {
       ws2812_setleds(led, RGBLED_NUM);
     #endif
   } else {
-    for (uint8_t i = 0; i < RGBLED_NUM; i++) {
+    for (uint8_t i = 0; i < RGBLED_NUM - 2; i++) {
       led[i].r = 0;
       led[i].g = 0;
       led[i].b = 0;
@@ -484,8 +484,8 @@ void rgblight_effect_rainbow_swirl(uint8_t interval) {
     return;
   }
   last_timer = timer_read();
-  for (i = 0; i < RGBLED_NUM; i++) {
-    hue = (360 / RGBLED_NUM * i + current_hue) % 360;
+  for (i = 0; i < RGBLED_NUM - 2; i++) {
+    hue = (360 / (RGBLED_NUM - 2) * i + current_hue) % 360;
     sethsv(hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
   }
   rgblight_set();
@@ -513,14 +513,14 @@ void rgblight_effect_snake(uint8_t interval) {
     return;
   }
   last_timer = timer_read();
-  for (i = 0; i < RGBLED_NUM; i++) {
+  for (i = 0; i < RGBLED_NUM - 2; i++) {
     led[i].r = 0;
     led[i].g = 0;
     led[i].b = 0;
     for (j = 0; j < RGBLIGHT_EFFECT_SNAKE_LENGTH; j++) {
       k = pos + j * increment;
       if (k < 0) {
-        k = k + RGBLED_NUM;
+        k = k + RGBLED_NUM - 2;
       }
       if (i == k) {
         sethsv(rgblight_config.hue, rgblight_config.sat, (uint8_t)(rgblight_config.val*(RGBLIGHT_EFFECT_SNAKE_LENGTH-j)/RGBLIGHT_EFFECT_SNAKE_LENGTH), (LED_TYPE *)&led[i]);
@@ -530,12 +530,12 @@ void rgblight_effect_snake(uint8_t interval) {
   rgblight_set();
   if (increment == 1) {
     if (pos - 1 < 0) {
-      pos = RGBLED_NUM - 1;
+      pos = RGBLED_NUM - 3;
     } else {
       pos -= 1;
     }
   } else {
-    pos = (pos + 1) % RGBLED_NUM;
+    pos = (pos + 1) % (RGBLED_NUM - 2);
   }
 }
 void rgblight_effect_knight(uint8_t interval) {
@@ -549,7 +549,7 @@ void rgblight_effect_knight(uint8_t interval) {
     return;
   }
   last_timer = timer_read();
-  for (i = 0; i < RGBLED_NUM; i++) {
+  for (i = 0; i < RGBLED_NUM - 2; i++) {
     preled[i].r = 0;
     preled[i].g = 0;
     preled[i].b = 0;
@@ -559,7 +559,7 @@ void rgblight_effect_knight(uint8_t interval) {
         k = 0;
       }
       if (k >= RGBLED_NUM) {
-        k = RGBLED_NUM - 1;
+        k = RGBLED_NUM - 3;
       }
       if (i == k) {
         sethsv(rgblight_config.hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&preled[i]);
@@ -567,8 +567,8 @@ void rgblight_effect_knight(uint8_t interval) {
     }
   }
   if (RGBLIGHT_EFFECT_KNIGHT_OFFSET) {
-    for (i = 0; i < RGBLED_NUM; i++) {
-      cur = (i + RGBLIGHT_EFFECT_KNIGHT_OFFSET) % RGBLED_NUM;
+    for (i = 0; i < RGBLED_NUM - 2; i++) {
+      cur = (i + RGBLIGHT_EFFECT_KNIGHT_OFFSET) % (RGBLED_NUM - 2);
       led[i].r = preled[cur].r;
       led[i].g = preled[cur].g;
       led[i].b = preled[cur].b;
@@ -583,8 +583,8 @@ void rgblight_effect_knight(uint8_t interval) {
       pos -= 1;
     }
   } else {
-    if (pos + 1 > RGBLED_NUM + RGBLIGHT_EFFECT_KNIGHT_LENGTH) {
-      pos = RGBLED_NUM + RGBLIGHT_EFFECT_KNIGHT_LENGTH - 1;
+    if (pos + 1 > RGBLED_NUM - 2 + RGBLIGHT_EFFECT_KNIGHT_LENGTH) {
+      pos = RGBLED_NUM - 2 + RGBLIGHT_EFFECT_KNIGHT_LENGTH - 1;
       increment = 1;
     } else {
       pos += 1;
@@ -603,7 +603,7 @@ void rgblight_effect_christmas(void) {
   }
   last_timer = timer_read();
   current_offset = (current_offset + 1) % 2;
-  for (i = 0; i < RGBLED_NUM; i++) {
+  for (i = 0; i < RGBLED_NUM - 2; i++) {
     hue = 0 + ((i/RGBLIGHT_EFFECT_CHRISTMAS_STEP + current_offset) % 2) * 120;
     sethsv(hue, rgblight_config.sat, rgblight_config.val, (LED_TYPE *)&led[i]);
   }

@@ -1,5 +1,5 @@
 /*
-Copyright 2017 REPLACE_WITH_YOUR_NAME
+Copyright 2017 JC
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,16 +42,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *                  ROW2COL = ROW = Anode (+), COL = Cathode (-, marked on diode)
  *
 */
-#define MATRIX_ROW_PINS { B5, B4, E6, D7 }
-#define MATRIX_COL_PINS { F4, F5, F6, F7, B1, B3, B2, B6, D4, D1, D2, D3 }
+#define MATRIX_ROW_PINS { B1, B3, B2, B6 }
+#define MATRIX_COL_PINS { B5, B4, D0, D7, D4, D1, D2, D3, F4, F5, F6, F7 }
 #define UNUSED_PINS
 
 /* COL2ROW, ROW2COL, or CUSTOM_MATRIX */
 #define DIODE_DIRECTION COL2ROW
  
-#define BACKLIGHT_PIN D0
+// #define BACKLIGHT_PIN E6
 //#define BACKLIGHT_BREATHING
-#define BACKLIGHT_LEVELS 4
+// #define BACKLIGHT_LEVELS 4
 
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
