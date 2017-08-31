@@ -31,6 +31,7 @@ enum jc_layers {
   _LHUB,    // Layer Hub (Momentary)
   _MEDI,    // Media Layer (Toggle)
   _NUMP,    // NumPad Layer (Toggle)
+  _MOUS,    // Mouse Layer (Toggle)
   _QMKL,    // QMK Layer (Toggle)
   _DIA3,    // Diablo 3 Layer (Toggle)
   _D3FN,    // Diablo 3 FN Layer (Macros) (Momentary)
@@ -43,13 +44,13 @@ enum jc_customplanck_keycodes {
   LHUB,
   MEDI,
   NUMP,
+  MOUS,
   QMKL,
   DIA3,
   D3FN,
 };
 
 enum jc_customplanck_functions {
-  __RST,
   __LLUP,
   __LLDN,
 };
@@ -178,7 +179,7 @@ __________,__________,__________,__________,    M_MicM,   KC_PSCR,   KC_SLCK,   
  * ,-----------------------------------------------------------------------------------.
  * |_QMKL | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | XXXX | XXXX | XXXX |_DIA3 | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |
+ * | XXXX |_MOUS | XXXX |_DIA3 | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -187,7 +188,7 @@ __________,__________,__________,__________,    M_MicM,   KC_PSCR,   KC_SLCK,   
  */
 [_LHUB] = KEYMAP(
       QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      DIA3,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+XXXXXXXXXX,      MOUS,XXXXXXXXXX,      DIA3,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
       MEDI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,__________,      MAIN,      COLE,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      MEDI
 ),
@@ -228,6 +229,24 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,    KC_SPC,     KC_P0,     KC_P0,   KC_PDOT,XXXXXXXXXX,   KC_PENT
 ),
 
+/* _MOUS: Mouse Layer (Toggle)
+ * ,-----------------------------------------------------------------------------------.
+ * |  Esc | Bksp |  M4  |  MUp |  M5  | MScrU|MAccl0| XXXX | XXXX | XXXX | XXXX | XXXX |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  Tab | Enter| MLeft| MDown| MRght| MScrD|MAccl1| XXXX | XXXX | XXXX | XXXX | XXXX |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Shift| Space|  Del | WRef | MScrL| MScrR|MAccl2| XXXX | XXXX | XXXX | XXXX | XXXX |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Ctrl |  Alt |  M3  |  M2  |  M1  | TGOFF| XXXX | XXXX | XXXX | XXXX | XXXX | XXXX |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_MOUS] = KEYMAP(
+    KC_ESC,   KC_BSPC,   KC_BTN4,   KC_MS_U,   KC_BTN5,   KC_WH_U,   KC_ACL0,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+    KC_TAB,    KC_ENT,   KC_MS_L,   KC_MS_D,   KC_MS_R,   KC_WH_D,   KC_ACL1,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+   KC_LSFT,    KC_SPC,    KC_DEL,   KC_WREF,   KC_WH_L,   KC_WH_R,   KC_ACL2,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+   KC_LCTL,   KC_LALT,   KC_BTN3,   KC_BTN2,   KC_BTN1,      MOUS,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
+),
+
 /* _QMKL: QMK Layer (Toggle)
  * ,-----------------------------------------------------------------------------------.
  * | XXXX | Hue- | Hue+ | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | Reset|
@@ -240,7 +259,7 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,    KC_SPC,   
  * `-----------------------------------------------------------------------------------'
  */
 [_QMKL] = KEYMAP(
-XXXXXXXXXX,   RGB_HUD,   RGB_HUI, F(__LLDN), F(__LLUP),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,  F(__RST),
+XXXXXXXXXX,   RGB_HUD,   RGB_HUI, F(__LLDN), F(__LLUP),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     RESET,
 XXXXXXXXXX,   RGB_SAD,   RGB_SAI,   RGB_MOD,   RGB_TOG,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     DEBUG,
 XXXXXXXXXX,   RGB_VAD,   RGB_VAI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    BL_INC,XXXXXXXXXX,
 XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   BL_STEP,    BL_DEC,   BL_TOGG
@@ -259,7 +278,7 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXX
  */
 [_DIA3] = KEYMAP(
     KC_ESC,      DE_1,      DE_2,      DE_3,      DE_4,      DE_5,   KC_PGUP,XXXXXXXXXX,XXXXXXXXXX,      DE_9,      DE_0,   KC_BSPC,
-    KC_TAB,      DE_Q,      DE_S,      DE_D,      DE_F,      DE_T,   KC_PGDN,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
+    KC_TAB,      DE_Q,      DE_S,      DE_D,      DE_F,      DE_T,   KC_PGDN,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    KC_ENT,
    KC_LSFT,      DE_M,      DE_X,      DE_C,      DE_V,      DE_G,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
    KC_LCTL,     KC_F5,   KC_LALT,      D3FN,   KC_LSFT,    KC_SPC,   KC_LALT,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      DIA3
 ),
@@ -279,32 +298,16 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXX
     D3_Clr,     D3_1L,     D3_2L,     D3_3L,     D3_4L,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
      KC_F9,      DE_L,      DE_J,      DE_O,      DE_P,   D3_ClTn,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
    KC_PSCR,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,
-XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,__________,    M_MicM,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
+    KC_ENT,XXXXXXXXXX,XXXXXXXXXX,__________,    M_MicM,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX
 ),
 
 };
 
 /* id for user defined functions */
 enum function_id {
-    PROMICRO_PROGRAM,
     LAYERLED_DOWN,
     LAYERLED_UP,
 };
-
-void promicro_bootloader_jmp(bool program) {
-    uint16_t *const bootKeyPtr = (uint16_t *)0x0800;
-
-    // Value used by Caterina bootloader use to determine whether to run the
-    // sketch or the bootloader programmer.
-    uint16_t bootKey = program ? 0x7777 : 0;
-
-    *bootKeyPtr = bootKey;
-
-    // setup watchdog timeout
-    wdt_enable(WDTO_60MS);
-
-    while(1) {} // wait for watchdog timer to trigger
-}
 
 /*
 * user defined action function
@@ -312,9 +315,6 @@ void promicro_bootloader_jmp(bool program) {
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
     switch (id) {
-        case PROMICRO_PROGRAM:
-            promicro_bootloader_jmp(true);
-            break;
         case LAYERLED_DOWN:
             if (record->event.pressed) {
               if (layer_led_val_step - 1 < 1) {
@@ -347,7 +347,6 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt)
 *   fn_actions
 */
 const uint16_t PROGMEM fn_actions[] = {
-  [__RST] = ACTION_FUNCTION(PROMICRO_PROGRAM),
   [__LLDN] = ACTION_FUNCTION(LAYERLED_DOWN),
   [__LLUP] = ACTION_FUNCTION(LAYERLED_UP),
 };
@@ -464,6 +463,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
+    case MOUS:
+        if (record->event.pressed) {
+            if(IS_LAYER_OFF(_MOUS)) {
+              layer_on(_MOUS);
+              layer_off(_LHUB);
+            }
+            else if(IS_LAYER_ON(_MOUS)) {
+              layer_off(_MOUS);
+              layer_on(_LHUB);
+            }
+        }
+        return false;
+        break;
     case QMKL:
         if (record->event.pressed) {
             if(IS_LAYER_OFF(_QMKL)) {
@@ -539,6 +551,18 @@ void matrix_scan_user(void) {
             led[6].r = 70 * layer_led_val_step / layer_led_val_step_max;
             led[6].g = 230 * layer_led_val_step / layer_led_val_step_max;
             led[6].b = 230 * layer_led_val_step / layer_led_val_step_max;
+            ws2812_setleds(led, 8);
+            break;
+        case _NUMP:
+            led[6].r = 190 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 41 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 255 * layer_led_val_step / layer_led_val_step_max;
+            ws2812_setleds(led, 8);
+            break;
+        case _MOUS:
+            led[6].r = 0 * layer_led_val_step / layer_led_val_step_max;
+            led[6].g = 0 * layer_led_val_step / layer_led_val_step_max;
+            led[6].b = 255 * layer_led_val_step / layer_led_val_step_max;
             ws2812_setleds(led, 8);
             break;
         case _QMKL:
