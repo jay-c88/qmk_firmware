@@ -22,6 +22,8 @@
 #include "eeconfig.h"
 #include <avr/eeprom.h>
 
+const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {100, 50, 10};
+
 enum jc_layers {
   _MAIN,    // Main Layer
   _COLE,    // Colemak Layer (Toggle)
@@ -38,8 +40,7 @@ enum jc_layers {
 };
 
 enum jc_customplanck_keycodes {
-  DEFAULT = SAFE_RANGE,
-  MAIN,
+  MAIN = SAFE_RANGE,
   COLE,
   LHUB,
   MEDI,
@@ -48,7 +49,10 @@ enum jc_customplanck_keycodes {
   QMKL,
   DIA3,
   D3FN,
+  DYNAMIC_MACRO_RANGE,  // has to be last entry!
 };
+
+#include "dynamic_macro.h"  // has to be after keycodes enum
 
 enum jc_customplanck_functions {
   __LLUP,
@@ -69,6 +73,11 @@ enum jc_customplanck_macros {
 #define XXXXXXXXXX  KC_NO
 #define DE_MICR     ALGR(KC_M)
 
+#define DM_REC1     DYN_REC_START1
+#define DM_REC2     DYN_REC_START2
+#define DM_PLY1     DYN_MACRO_PLAY1
+#define DM_PLY2     DYN_MACRO_PLAY2
+#define DM_STOP     DYN_REC_STOP
 
 #define D3_Clr      M(_M_D3_Clr)
 #define D3_1L       M(_M_D3_1L)
@@ -253,16 +262,16 @@ XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      NUMP,    KC_SPC,   
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | XXXX | Sat- | Sat+ |LEDCyc|LEDTog| XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | Debug|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | XXXX | Val- | Val+ | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | BL + | XXXX |
+ * | XXXX | Val- | Val+ | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | XXXX | DRec1| DRec2|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | XXXX | XXXX | XXXX | XXXX | XXXX | TGOFF| XXXX | XXXX | XXXX |BLStep| BL - |BLTogg|
+ * | XXXX | XXXX | XXXX | XXXX | XXXX | TGOFF| XXXX | XXXX | XXXX | DStpR| DPly1| DPly2|
  * `-----------------------------------------------------------------------------------'
  */
 [_QMKL] = KEYMAP(
 XXXXXXXXXX,   RGB_HUD,   RGB_HUI, F(__LLDN), F(__LLUP),XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     RESET,
 XXXXXXXXXX,   RGB_SAD,   RGB_SAI,   RGB_MOD,   RGB_TOG,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,     DEBUG,
-XXXXXXXXXX,   RGB_VAD,   RGB_VAI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,    BL_INC,XXXXXXXXXX,
-XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   BL_STEP,    BL_DEC,   BL_TOGG
+XXXXXXXXXX,   RGB_VAD,   RGB_VAI,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   DM_REC1,   DM_REC2,
+XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,      QMKL,XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX,   DM_STOP,   DM_PLY1,   DM_PLY2
 ),
 
 /* _DIA3: 
@@ -511,6 +520,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         break;
   }
+
+  if (!process_record_dynamic_macro(keycode, record)) {
+    return false;
+  }
+  
   return true;
 }
 
