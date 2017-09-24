@@ -17,7 +17,6 @@
 #include "jc_customplanck.h"
 #include "action_layer.h"
 #include "keymap_extras/keymap_german.h"
-#include "rgblight.h"
 #include "led.h"
 #include "avr/wdt.h"
 #include "eeconfig.h"
