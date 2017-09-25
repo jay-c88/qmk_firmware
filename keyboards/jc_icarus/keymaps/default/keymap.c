@@ -28,7 +28,7 @@ enum jc_layers {
   _CMIR,    // Colemak Mirror Layer (Momentary)
   _LHUB,    // Layer Hub (Momentary)
   _QMKL,    // QMK Layer (Toggle)
-  _MEDI,    // Media Layer (Toggle)
+  _MOUS,    // Mouse Layer (Toggle)
 };
 
 enum jc_customplanck_keycodes {
@@ -41,7 +41,7 @@ enum jc_customplanck_keycodes {
   CMIR,
   LHUB,
   QMKL,
-  MEDI,
+  MOUS,
   DYNAMIC_MACRO_RANGE,  // has to be last entry!
 };
 
@@ -101,9 +101,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_NAVI] = KEYMAP(
   ________,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                           KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,________,
   ________, KC_PGUP, KC_HOME,   KC_UP,  KC_END,  KC_F11,                                          KC_F11, KC_HOME,   KC_UP,  KC_END, KC_PGUP,________,
-  ________, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_F12,________,XXXXXXXX,    XXXXXXXX,________,  KC_F12, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN,________,
-  ________,  M_UNDO,  M_REDO,  KC_DEL, KC_BSPC, KC_PSCR,________,________,    XXXXXXXX,________,XXXXXXXX,  KC_INS, KC_PSCR, KC_SLCK, KC_PAUS,________,
-  ________,________,________,________,         ________,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         ________,________,________,________,________
+  ________, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_F12,________,  M_MicM,    XXXXXXXX,________,  KC_F12, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN,________,
+  ________,  M_UNDO,  M_REDO,  KC_DEL, KC_BSPC, KC_PSCR, KC_MPLY, KC_MUTE,    XXXXXXXX,________,XXXXXXXX,  KC_INS, KC_PSCR, KC_SLCK, KC_PAUS,________,
+  ________,________,________,________,         ________, KC_MPRV, KC_MNXT,    XXXXXXXX,XXXXXXXX,         ________,________,________,________,________
 ),
 
 // _NUMP: NumPad Layer (Momentary)
@@ -139,7 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    COLE,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,________,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX, DM_REC1, DM_REC2,
-  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX, DM_STOP, DM_PLY1, DM_PLY2
+      MOUS,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX, DM_STOP, DM_PLY1, DM_PLY2
 ),
 
 // _QMKL: QMK Layer (Toggle)
@@ -151,9 +151,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX
 ),
 
+// _MOUS: Mouse Layer (Toggle)
+[_MOUS] = KEYMAP(
+  ________,________,________,________,________,________,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  ________, KC_ACL0, KC_BTN4, KC_MS_U, KC_BTN5, KC_WH_U,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  ________, KC_ACL1, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D,________,    MOUS,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  ________, KC_ACL2,XXXXXXXX, KC_WREF, KC_WH_L, KC_WH_R,________,________,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  ________,________,________, KC_BTN2,          KC_BTN1, KC_BTN3,  KC_SPC,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX
+),
+
+
 // [_PLACEHOLDER] = KEYMAP(
-//   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                       ,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
-//   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                       ,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+//   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+//   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
 //   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
 //   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
 //   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX
@@ -249,14 +259,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-    case MEDI:
+    case MOUS:
         if (record->event.pressed) {
-            if(IS_LAYER_OFF(_MEDI)) {
-              layer_on(_MEDI);
+            if(IS_LAYER_OFF(_MOUS)) {
+              layer_on(_MOUS);
               layer_off(_LHUB);
             }
-            else if(IS_LAYER_ON(_MEDI)) {
-              layer_off(_MEDI);
+            else if(IS_LAYER_ON(_MOUS)) {
+              layer_off(_MOUS);
             }
         }
         return false;
