@@ -56,6 +56,9 @@ enum jc_customplanck_macros {
 #define XXXXXXXX    KC_NO
 #define DE_MICR     ALGR(KC_M)
 
+#define M_UNDO      LCTL(DE_Z)
+#define M_REDO      LCTL(S(DE_Z))
+
 #define DM_REC1     DYN_REC_START1
 #define DM_REC2     DYN_REC_START2
 #define DM_PLY1     DYN_MACRO_PLAY1
@@ -85,7 +88,68 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_LCTL, KC_LGUI, KC_LALT,    NAVI,           KC_SPC,    CMIR,    NUMP,        NUMP,    SYMB,           KC_SPC,    NAVI, KC_RALT, KC_RGUI, KC_RCTL
 ),
 
+// _SYMB: Symbol Layer (Momentary)
+[_SYMB] = KEYMAP(
+  ________,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,________,
+   DE_CIRC,   DE_AT, DE_DQOT, DE_EURO,  DE_DLR, DE_PERC,                                         DE_PARA, DE_LESS, DE_MORE,  DE_EQL, DE_PLUS, DE_HASH,
+   DE_RING, DE_LBRC, DE_RBRC, DE_LCBR, DE_RCBR, DE_EXLM,________,XXXXXXXX,    XXXXXXXX,________,  DE_QST, DE_LPRN, DE_RPRN, DE_MINS, DE_COLN, DE_QUOT,
+  XXXXXXXX,  DE_GRV, DE_ACUT, DE_MICR, DE_TILD, DE_PIPE,________,________,    XXXXXXXX,________, DE_AMPR, DE_ASTR, DE_UNDS, DE_BSLS, DE_SLSH, DE_SCLN,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         ________,XXXXXXXX,XXXXXXXX,    XXXXXXXX,________,         ________,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX
+),
 
+// _NAVI: Navigation Layer (Momentary)
+[_NAVI] = KEYMAP(
+  ________,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                           KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,________,
+  ________, KC_PGUP, KC_HOME,   KC_UP,  KC_END,  KC_F11,                                          KC_F11, KC_HOME,   KC_UP,  KC_END, KC_PGUP,________,
+  ________, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,  KC_F12,________,XXXXXXXX,    XXXXXXXX,________,  KC_F12, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN,________,
+  ________,  M_UNDO,  M_REDO,  KC_DEL, KC_BSPC, KC_PSCR,________,________,    XXXXXXXX,________,XXXXXXXX,  KC_INS, KC_PSCR, KC_SLCK, KC_PAUS,________,
+  ________,________,________,________,         ________,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         ________,________,________,________,________
+),
+
+// _NUMP: NumPad Layer (Momentary)
+[_NUMP] = KEYMAP(
+  ________,XXXXXXXX, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,                                        XXXXXXXX, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,________,
+  ________,  DE_DOT,   KC_P7,   KC_P8,   KC_P9, KC_PPLS,                                        XXXXXXXX,   KC_P7,   KC_P8,   KC_P9, KC_PPLS,________,
+  ________, KC_NLCK,   KC_P4,   KC_P5,   KC_P6,  DE_EQL,________,XXXXXXXX,    XXXXXXXX,________,  DE_DOT,   KC_P4,   KC_P5,   KC_P6,  DE_EQL,XXXXXXXX,
+  ________, KC_PDOT,   KC_P1,   KC_P2,   KC_P3,   KC_P0,________,________,    XXXXXXXX,________,   KC_P0,   KC_P1,   KC_P2,   KC_P3, KC_PDOT,________,
+  ________,________,________,   KC_P0,         ________,XXXXXXXX,________,    ________,XXXXXXXX,         ________,   KC_P0,________,________,________
+),
+
+// _MIRR: Mirror Layer (Momentary, QWERTZ-DE)
+[_MIRR] = KEYMAP(
+  ________,    DE_0,    DE_9,    DE_8,    DE_7,    DE_6,                                            DE_5,    DE_4,    DE_3,    DE_2,    DE_1,________,
+  ________,    DE_P,    DE_O,    DE_I,    DE_U,    DE_Z,                                            DE_T,    DE_R,    DE_E,    DE_W,    DE_Q,________,
+     DE_AE,   DE_OE,    DE_L,    DE_K,    DE_J,    DE_H,________,XXXXXXXX,    XXXXXXXX,________,    DE_G,    DE_F,    DE_D,    DE_S,    DE_A,XXXXXXXX,
+  ________,   DE_UE,  DE_DOT, DE_COMM,    DE_M,    DE_N,________,________,    ________,________,    DE_B,   DE_V,     DE_C,    DE_X,    DE_Y,________,
+  ________,   DE_SS, KC_RALT,XXXXXXXX,         ________,________,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         ________,XXXXXXXX,________,________,________
+),
+
+// _CMIR: Colemak Mirror Layer (Momentary, Custom-DE)
+[_CMIR] = KEYMAP(
+  ________,    DE_0,    DE_9,    DE_8,    DE_7,    DE_6,                                            DE_5,    DE_4,    DE_3,    DE_2,    DE_1,________,
+  ________,   DE_OE,    DE_Z,    DE_U,    DE_L,    DE_J,                                            DE_G,    DE_P,    DE_F,    DE_W,    DE_Q,________,
+     DE_AE,    DE_O,    DE_I,    DE_E,    DE_N,    DE_H,________,XXXXXXXX,    XXXXXXXX,________,    DE_D,    DE_T,    DE_S,    DE_R,    DE_A,XXXXXXXX,
+  ________,   DE_UE,  DE_DOT, DE_COMM,    DE_M,    DE_K,________,________,    ________,________,    DE_B,   DE_V,     DE_C,    DE_X,    DE_Y,________,
+  ________,   DE_SS, KC_RALT,XXXXXXXX,         ________,________,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         ________,XXXXXXXX,________,________,________
+),
+
+// _LHUB: Layer Hub (Momentary)
+[_LHUB] = KEYMAP(
+      QMKL,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    MAIN,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    COLE,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,________,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX, DM_REC1, DM_REC2,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX, DM_STOP, DM_PLY1, DM_PLY2
+),
+
+// _QMKL: QMK Layer (Toggle)
+[_QMKL] = KEYMAP(
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,   RESET,
+  XXXXXXXX, RGB_HUD, RGB_HUI,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                        XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,   DEBUG,
+  XXXXXXXX, RGB_SAD, RGB_SAI, RGB_MOD, RGB_TOG,XXXXXXXX,XXXXXXXX,    QMKL,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  XXXXXXXX, RGB_VAD, RGB_VAI,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
+  XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,    XXXXXXXX,XXXXXXXX,         XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX
+),
 
 // [_PLACEHOLDER] = KEYMAP(
 //   XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,                                       ,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,XXXXXXXX,
@@ -193,7 +257,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else if(IS_LAYER_ON(_MEDI)) {
               layer_off(_MEDI);
-              layer_on(_LHUB);
             }
         }
         return false;
@@ -206,7 +269,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else if(IS_LAYER_ON(_QMKL)) {
               layer_off(_QMKL);
-              layer_on(_LHUB);
             }
         }
         return false;
