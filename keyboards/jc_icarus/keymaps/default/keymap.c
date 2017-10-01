@@ -49,7 +49,7 @@ enum jc_customplanck_keycodes {
 
 
 enum jc_customplanck_macros {
-  _M_MicM,
+  _M_MicM,  // Mic mute button in AutoHotKey (Caps+^)
 };
 
 #define ________    KC_TRNS
